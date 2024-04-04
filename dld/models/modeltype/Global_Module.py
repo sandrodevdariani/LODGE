@@ -107,7 +107,7 @@ class Global_Module(BaseModel):
             dataname = str(cfg.TRAIN.DATASETS[0])
             # aaa = eval(f"cfg.DATASET.{dataname.upper()}.normalizer")
             # self.normalizer = instantiate_from_config(eval(f"cfg.DATASET.{dataname.upper()}.normalizer"))
-            self.normalizer = torch.load(eval(f"cfg.DATASET.{dataname.upper()}.normalizer"))  
+            self.normalizer = torch.load("data/Normalizer.pth")
         else:
             self.normalizer = None
 

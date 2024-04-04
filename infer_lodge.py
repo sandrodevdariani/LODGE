@@ -1,7 +1,7 @@
 import logging
 import os, pickle
 from omegaconf import OmegaConf
-
+import math
 import sys
 import time
 from builtins import ValueError
@@ -27,6 +27,11 @@ from concat_res import concat_res
 from dld.data.render_joints.smplfk import ax_from_6v, ax_to_6v
 from dld.data.FineDance_dataset import music2genre, Genres_fd
 
+# Check if GPU is available
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+print("Selected device:", device)
+print("start")
 
 def swap_left_right(data):   
     right_chain = [2, 5, 8, 11, 14, 17, 19, 21]
@@ -35,7 +40,7 @@ def swap_left_right(data):
     right_hand_chain = [43, 44, 45, 46, 47, 48, 40, 41, 42, 37, 38, 39, 49, 50, 51]
     
     if data.shape[-1] == 22*6:
-        device_ = data.device
+        device = device
         t,c= data.shape
         data = ax_from_6v(data.view(t,22,6))
     elif data.shape[-1] == 52*6:
@@ -313,9 +318,9 @@ if __name__ == "__main__":
     cfg.Name = "demo--" + cfg.NAME
     cfg.length1 = 1024
     cfg.length2 = 256
-    cfg.checkpoint1 = 'exp/Global_Module/FineDance_Global/checkpoints/epoch=2999.ckpt'
-    cfg.checkpoint2 = 'exp/Local_Module/FineDance_FineTuneV2_Local/checkpoints/epoch=299.ckpt'
-    cfg_coarse =  OmegaConf.load('exp/Global_Module/FineDance_Global/global_train.yaml')
+    cfg.checkpoint1 = './Global_Module/FineDance_Global/checkpoints/epoch=2999.ckpt'
+    cfg.checkpoint2 = './Local_Module/FineDance_FineTuneV2_Local/checkpoints/epoch=299.ckpt'
+    cfg_coarse =  OmegaConf.load('./Global_Module/FineDance_Global/global_train.yaml')
     music2genre_ = music2genre("data/finedance/label_json")
     music_dir = "data/finedance/music"  
     print("cfg.soft", cfg.soft)

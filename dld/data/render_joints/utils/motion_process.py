@@ -1,6 +1,6 @@
 import torch
 try:
-    from utils.quaternion import quaternion_to_cont6d, qrot, qinv
+    from dld.data.render_joints.utils.quaternion import quaternion_to_cont6d, qrot, qinv
 except:
     from dld.data.render_joints.utils.quaternion import quaternion_to_cont6d, qrot, qinv
 
